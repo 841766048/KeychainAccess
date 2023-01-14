@@ -6,49 +6,49 @@
 [![Version](https://img.shields.io/cocoapods/v/KeychainAccess.svg)](http://cocoadocs.org/docsets/KeychainAccess)
 [![Platform](https://img.shields.io/cocoapods/p/KeychainAccess.svg)](http://cocoadocs.org/docsets/KeychainAccess)
 
-KeychainAccess is a simple Swift wrapper for Keychain that works on iOS and OS X. Makes using Keychain APIs extremely easy and much more palatable to use in Swift.
+KeychainAccess 是适用于 iOS 和 OS X 的 Keychain 的简单 Swift 包装器。使使用 Keychain API 变得极其简单，并且在 Swift 中使用起来更容易接受。
 
 <img src="https://raw.githubusercontent.com/kishikawakatsumi/KeychainAccess/master/Screenshots/01.png" width="320px" />
 <img src="https://raw.githubusercontent.com/kishikawakatsumi/KeychainAccess/master/Screenshots/02.png" width="320px" />
 <img src="https://raw.githubusercontent.com/kishikawakatsumi/KeychainAccess/master/Screenshots/03.png" width="320px" />
 
-## :bulb: Features
+## :bulb: 特征
 
-- Simple interface
-- Support access group
-- [Support accessibility](#accessibility)
-- [Support iCloud sharing](#icloud_sharing)
-- **[Support TouchID and Keychain integration (iOS 8+)](#touch_id_integration)**
-- **[Support Shared Web Credentials (iOS 8+)](#shared_web_credentials)**
-- [Works on both iOS & macOS](#requirements)
-- [watchOS and tvOS are supported](#requirements)
-- **[Mac Catalyst is supported](#requirements)**
-- **[Swift 3, 4 and 5 compatible](#requirements)**
+- 简单的界面
+- 支持访问组
+- [支持辅助功能](#accessibility)
+- [支持iCloud分享g](#icloud_sharing)
+- **[支持 TouchID 和钥匙串集成 (iOS 8+)](#touch_id_integration)**
+- **[支持共享网络凭证 (iOS 8+)](#shared_web_credentials)**
+- [适用于 iOS 和 macOS](#requirements)
+- [支持 watchOS 和 tvOS](#requirements)
+- **[支持Mac Catalyst](#requirements)**
+- **[兼容 Swift 3、4 和 5](#requirements)**
 
-## :book: Usage
+## :book: 用法
 
-##### :eyes: See also:  
+##### :eyes: 另请参阅:  
 - [:link: iOS Example Project](https://github.com/kishikawakatsumi/KeychainAccess/tree/master/Examples/Example-iOS)
 
-### :key: Basics
+### :key: 基础用法
 
-#### Saving Application Password
+#### 保存应用密码
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
 keychain["kishikawakatsumi"] = "01234567-89ab-cdef-0123-456789abcdef"
 ```
 
-#### Saving Internet Password
+#### 保存互联网密码
 
 ```swift
 let keychain = Keychain(server: "https://github.com", protocolType: .https)
 keychain["kishikawakatsumi"] = "01234567-89ab-cdef-0123-456789abcdef"
 ```
 
-### :key: Instantiation
+### :key: 实例化
 
-#### Create Keychain for Application Password
+#### 为应用程序密码创建钥匙串
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
@@ -58,7 +58,7 @@ let keychain = Keychain(service: "com.example.github-token")
 let keychain = Keychain(service: "com.example.github-token", accessGroup: "12ABCD3E4F.shared")
 ```
 
-#### Create Keychain for Internet Password
+#### 为互联网密码创建钥匙串
 
 ```swift
 let keychain = Keychain(server: "https://github.com", protocolType: .https)
@@ -68,11 +68,11 @@ let keychain = Keychain(server: "https://github.com", protocolType: .https)
 let keychain = Keychain(server: "https://github.com", protocolType: .https, authenticationType: .htmlForm)
 ```
 
-### :key: Adding an item
+### :key: 添加item
 
-#### subscripting
+#### 下标方式添加
 
-##### for String
+##### value 是 String 类型
 
 ```swift
 keychain["kishikawakatsumi"] = "01234567-89ab-cdef-0123-456789abcdef"
@@ -82,19 +82,19 @@ keychain["kishikawakatsumi"] = "01234567-89ab-cdef-0123-456789abcdef"
 keychain[string: "kishikawakatsumi"] = "01234567-89ab-cdef-0123-456789abcdef"
 ```
 
-##### for NSData
+##### value 是 NSData 类型
 
 ```swift
 keychain[data: "secret"] = NSData(contentsOfFile: "secret.bin")
 ```
 
-#### set method
+#### Set 方式
 
 ```swift
 keychain.set("01234567-89ab-cdef-0123-456789abcdef", key: "kishikawakatsumi")
 ```
 
-#### error handling
+#### 错误处理
 
 ```swift
 do {
@@ -105,11 +105,11 @@ catch let error {
 }
 ```
 
-### :key: Obtaining an item
+### :key: 获取 item
 
-#### subscripting
+#### 下标方式获取
 
-##### for String (If the value is NSData, attempt to convert to String)
+##### String 类型 (如果值是NSData，尝试转换为字符串)
 
 ```swift
 let token = keychain["kishikawakatsumi"]
@@ -119,15 +119,15 @@ let token = keychain["kishikawakatsumi"]
 let token = keychain[string: "kishikawakatsumi"]
 ```
 
-##### for NSData
+##### NSData 类型
 
 ```swift
 let secretData = keychain[data: "secret"]
 ```
 
-#### get methods
+#### get 方法
 
-##### as String
+##### 获取字符串类型数据
 
 ```swift
 let token = try? keychain.get("kishikawakatsumi")
@@ -137,21 +137,21 @@ let token = try? keychain.get("kishikawakatsumi")
 let token = try? keychain.getString("kishikawakatsumi")
 ```
 
-##### as NSData
+##### 获取NSData类型数据
 
 ```swift
 let data = try? keychain.getData("kishikawakatsumi")
 ```
 
-### :key: Removing an item
+### :key: 删除 item
 
-#### subscripting
+#### 下标方式
 
 ```swift
 keychain["kishikawakatsumi"] = nil
 ```
 
-#### remove method
+#### remove 方法
 
 ```swift
 do {
@@ -161,7 +161,7 @@ do {
 }
 ```
 
-### :key: Set Label and Comment
+### :key: 设置标签(Label)和注释(Comment)
 
 ```swift
 let keychain = Keychain(server: "https://github.com", protocolType: .https)
@@ -175,9 +175,9 @@ do {
 }
 ```
 
-### :key: Obtaining Other Attributes
+### :key: 获取其他属性
 
-#### PersistentRef
+#### 持久引用
 
 ```swift
 let keychain = Keychain()
@@ -185,7 +185,7 @@ let persistentRef = keychain[attributes: "kishikawakatsumi"]?.persistentRef
 ...
 ```
 
-#### Creation Date
+#### 创建日期
 
 ```swift
 let keychain = Keychain()
@@ -193,7 +193,7 @@ let creationDate = keychain[attributes: "kishikawakatsumi"]?.creationDate
 ...
 ```
 
-#### All Attributes
+#### 所有属性
 
 ```swift
 let keychain = Keychain()
@@ -208,7 +208,7 @@ do {
 }
 ```
 
-##### subscripting
+##### 下标方式
 
 ```swift
 let keychain = Keychain()
@@ -219,9 +219,9 @@ if let attributes = keychain[attributes: "kishikawakatsumi"] {
 }
 ```
 
-### :key: Configuration (Accessibility, Sharing, iCloud Sync)
+### :key: 配置（辅助功能、共享、iCloud 同步）
 
-**Provides fluent interfaces**
+**提供流畅的接口**
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
@@ -230,17 +230,17 @@ let keychain = Keychain(service: "com.example.github-token")
     .accessibility(.afterFirstUnlock)
 ```
 
-#### <a name="accessibility"> Accessibility
+#### <a name="accessibility"> 辅助功能
 
-##### Default accessibility matches background application (=kSecAttrAccessibleAfterFirstUnlock)
+##### 默认可访问性匹配后台应用程序 (=kSecAttrAccessibleAfterFirstUnlock)
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
 ```
 
-##### For background application
+##### 对于后台应用
 
-###### Creating instance
+###### 创建实例
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
@@ -249,7 +249,7 @@ let keychain = Keychain(service: "com.example.github-token")
 keychain["kishikawakatsumi"] = "01234567-89ab-cdef-0123-456789abcdef"
 ```
 
-###### One-shot
+###### 一次
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
@@ -263,9 +263,9 @@ do {
 }
 ```
 
-##### For foreground application
+##### 对于前台应用
 
-###### Creating instance
+###### 创建实例
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
@@ -274,7 +274,7 @@ let keychain = Keychain(service: "com.example.github-token")
 keychain["kishikawakatsumi"] = "01234567-89ab-cdef-0123-456789abcdef"
 ```
 
-###### One-shot
+###### 一次
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
@@ -288,15 +288,15 @@ do {
 }
 ```
 
-#### :couple: Sharing Keychain items
+#### :couple: 共享钥匙串项目
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token", accessGroup: "12ABCD3E4F.shared")
 ```
 
-#### <a name="icloud_sharing"> :arrows_counterclockwise: Synchronizing Keychain items with iCloud
+#### <a name="icloud_sharing"> :arrows_counterclockwise: 将钥匙串项目与 iCloud 同步
 
-###### Creating instance
+###### 创建实例
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
@@ -305,7 +305,7 @@ let keychain = Keychain(service: "com.example.github-token")
 keychain["kishikawakatsumi"] = "01234567-89ab-cdef-0123-456789abcdef"
 ```
 
-###### One-shot
+###### 一次
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
@@ -319,17 +319,16 @@ do {
 }
 ```
 
-### <a name="touch_id_integration"> :cyclone: Touch ID (Face ID) integration
+### <a name="touch_id_integration"> :cyclone: 触控 ID（面容 ID）集成
 
-**Any Operation that require authentication must be run in the background thread.**  
-**If you run in the main thread, UI thread will lock for the system to try to display the authentication dialog.**
+**任何需要身份验证的操作都必须在后台线程中运行。.**  
+**如果在主线程中运行，UI 线程将锁定系统以尝试显示身份验证对话框。**
 
 
-**To use Face ID, add `NSFaceIDUsageDescription` key to your `Info.plist`**
+**要使用面容 ID，请将NSFaceIDUsageDescription密钥添加到您的Info.plist**
 
-#### :closed_lock_with_key: Adding a Touch ID (Face ID) protected item
-
-If you want to store the Touch ID protected Keychain item, specify `accessibility` and `authenticationPolicy` attributes.  
+#### :closed_lock_with_key: 添加 Touch ID（Face ID）保护项目
+如果要存储受 Touch ID 保护的钥匙串项目，请指定`accessibility`和 `authenticationPolicy` 属性。
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
@@ -346,15 +345,17 @@ DispatchQueue.global().async {
 }
 ```
 
-#### :closed_lock_with_key: Updating a Touch ID (Face ID) protected item
+#### :closed_lock_with_key: 更新受 Touch ID（Face ID）保护的项目
 
-The same way as when adding.  
+添加时的方法相同。
 
-**Do not run in the main thread if there is a possibility that the item you are trying to add already exists, and protected.**
-**Because updating protected items requires authentication.**
+**添加时的方法相同**
+** 如果您尝试添加的项目可能已经存在并受到保护，请不要在主线程中运行。 因为更新受保护的项目需要身份验证。.**
 
-Additionally, you want to show custom authentication prompt message when updating, specify an `authenticationPrompt` attribute.
-If the item not protected, the `authenticationPrompt` parameter just be ignored.
+此外，您希望在更新时显示自定义身份验证提示消息，请指定一个`authenticationPrompt`属性。
+如果该项目不受保护，则该`authenticationPrompt`参数将被忽略。
+
+
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
@@ -372,11 +373,10 @@ DispatchQueue.global().async {
 }
 ```
 
-#### :closed_lock_with_key: Obtaining a Touch ID (Face ID) protected item
+#### :closed_lock_with_key: 获取 Touch ID（Face ID）保护的物品
 
-The same way as when you get a normal item. It will be displayed automatically Touch ID or passcode authentication If the item you try to get is protected.  
-If you want to show custom authentication prompt message, specify an `authenticationPrompt` attribute.
-If the item not protected, the `authenticationPrompt` parameter just be ignored.
+与获得普通物品时的方式相同。如果您尝试获取的项目受到保护，它将自动显示 Touch ID 或密码验证。
+如果要显示自定义身份验证提示消息，请指定一个`authenticationPrompt`属性。如果该项目不受保护，则该`authenticationPrompt`参数将被忽略。
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
@@ -394,10 +394,10 @@ DispatchQueue.global().async {
 }
 ```
 
-#### :closed_lock_with_key: Removing a Touch ID (Face ID) protected item
+#### :closed_lock_with_key: 移除受 Touch ID（Face ID）保护的项目
 
-The same way as when you remove a normal item.
-There is no way to show Touch ID or passcode authentication when removing Keychain items.
+与删除普通项目时的方式相同。、
+删除钥匙串项时无法显示 Touch ID 或密码身份验证。
 
 ```swift
 let keychain = Keychain(service: "com.example.github-token")
@@ -409,9 +409,9 @@ do {
 }
 ```
 
-### <a name="shared_web_credentials"> :key: Shared Web Credentials
+### <a name="shared_web_credentials"> :key: 共享网络凭证
 
-> Shared web credentials is a programming interface that enables native iOS apps to share credentials with their website counterparts. For example, a user may log in to a website in Safari, entering a user name and password, and save those credentials using the iCloud Keychain. Later, the user may run a native app from the same developer, and instead of the app requiring the user to reenter a user name and password, shared web credentials gives it access to the credentials that were entered earlier in Safari. The user can also create new accounts, update passwords, or delete her account from within the app. These changes are then saved and used by Safari.  
+> 共享 Web 凭据是一个编程接口，它使本机 iOS 应用程序能够与其网站对应项共享凭据。例如，用户可以在 Safari 中登录网站，输入用户名和密码，然后使用 iCloud Keychain 保存这些凭据。稍后，用户可能会运行来自同一开发人员的本机应用程序，而不是应用程序要求用户重新输入用户名和密码，共享 Web 凭据允许它访问之前在 Safari 中输入的凭据。用户还可以在应用程序中创建新帐户、更新密码或删除她的帐户。这些更改随后会被保存并由 Safari 使用。
 <https://developer.apple.com/library/ios/documentation/Security/Reference/SharedWebCredentialsRef/>
 
 
@@ -450,7 +450,7 @@ if let password = try? keychain.get(username) {
 }
 ```
 
-#### Request all associated domain's credentials
+#### 请求所有关联域的凭据
 
 ```swift
 Keychain.requestSharedWebCredential { (credentials, error) -> () in
@@ -458,28 +458,28 @@ Keychain.requestSharedWebCredential { (credentials, error) -> () in
 }
 ```
 
-#### Generate strong random password
+#### 生成强随机密码
 
-Generate strong random password that is in the same format used by Safari autofill (xxx-xxx-xxx-xxx).
-
+生成与 Safari 自动填充 (xxx-xxx-xxx-xxx) 使用的格式相同的强随机密码。
+    
 ```swift
 let password = Keychain.generatePassword() // => Nhu-GKm-s3n-pMx
 ```
 
-#### How to set up Shared Web Credentials
+#### 如何设置共享 Web 凭据
 
-> 1. Add a com.apple.developer.associated-domains entitlement to your app. This entitlement must include all the domains with which you want to share credentials.
+> 1.将 com.apple.developer.associated-domains 权利添加到您的应用程序。此权利必须包括您要与之共享凭据的所有域。
 >
-> 2. Add an apple-app-site-association file to your website. This file must include application identifiers for all the apps with which the site wants to share credentials, and it must be properly signed.
->
-> 3. When the app is installed, the system downloads and verifies the site association file for each of its associated domains. If the verification is successful, the app is associated with the domain.
+> 2. 将 apple-app-site-association 文件添加到您的网站。此文件必须包含站点要与之共享凭据的所有应用程序的应用程序标识符，并且必须正确签名。
 
-**More details:**  
+> 3. 安装该应用程序后，系统会下载并验证其每个关联域的站点关联文件。如果验证成功，则该应用程序与该域相关联。
+
+**更多详细信息:**  
 <https://developer.apple.com/library/ios/documentation/Security/Reference/SharedWebCredentialsRef/>
 
-### :mag: Debugging
+### :mag: 调试
 
-#### Display all stored items if print keychain object
+#### 如果打印钥匙串对象，则显示所有存储的项目
 
 ```swift
 let keychain = Keychain(server: "https://github.com", protocolType: .https)
@@ -495,7 +495,7 @@ print("\(keychain)")
 ]
 ```
 
-#### Obtaining all stored keys
+#### 获取所有存储的密钥
 
 ```swift
 let keychain = Keychain(server: "https://github.com", protocolType: .https)
@@ -513,7 +513,7 @@ key: hirohamada
 key: honeylemon
 ```
 
-#### Obtaining all stored items
+#### 获取所有存储的item
 
 ```swift
 let keychain = Keychain(server: "https://github.com", protocolType: .https)
@@ -531,9 +531,9 @@ item: [authenticationType: Default, key: hirohamada, server: github.com, class: 
 item: [authenticationType: Default, key: honeylemon, server: github.com, class: InternetPassword, protocol: https]
 ```
 
-## Keychain sharing capability
+## 钥匙串共享功能
 
-If you encounter the error below, you need to add an `Keychain.entitlements`.
+如果您遇到以下错误，您需要添加一个`Keychain.entitlements`.
 
 ```
 OSStatus error:[-34018] Internal error when a required entitlement isn't present, client has neither application-identifier nor keychain-access-groups entitlements.
@@ -560,7 +560,7 @@ OSStatus error:[-34018] Internal error when a required entitlement isn't present
 | **v4.0.x** | iOS 8+, macOS 10.9+, watchOS 2+, tvOS 9+                   | 4.0, 4.1, 4.2, 5.1 |
 | **v4.1.x** | iOS 8+, macOS 10.9+, watchOS 3+, tvOS 9+, Mac Catalyst 13+ | 4.0, 4.1, 4.2, 5.1 |
 
-## Installation
+## 安装
 
 ### CocoaPods
 
@@ -573,15 +573,13 @@ pod 'KeychainAccess'
 ```
 
 ### Carthage
-
-KeychainAccess is available through [Carthage](https://github.com/Carthage/Carthage). To install
-it, simply add the following line to your Cartfile:
+KeychainAccess 可通过[Carthage](https://github.com/Carthage/Carthage)获得。
+要安装它，只需将以下行添加到您的 Cartfile 中
 
 `github "kishikawakatsumi/KeychainAccess"`
 
 ### Swift Package Manager
-
-KeychainAccess is also available through [Swift Package Manager](https://github.com/apple/swift-package-manager/).
+KeychainAccess 也可以通过[Swift Package Manager](https://github.com/apple/swift-package-manager/)获得。
 
 #### Xcode
 
@@ -589,9 +587,8 @@ Select `File > Add Packages... > Add Package Dependency...`,
 
 <img src="https://user-images.githubusercontent.com/40610/67627000-2833b580-f88f-11e9-89ef-18819b1a6c67.png" width="800px" />
 
-#### CLI
-
-First, create `Package.swift` that its package declaration includes:
+#### 命令行界面
+首先，创建`Package.swift`它的包声明包括：
 
 ```swift
 // swift-tools-version:5.0
@@ -611,19 +608,19 @@ let package = Package(
 )
 ```
 
-Then, type
+然后，输入
 
 ```shell
 $ swift build
 ```
 
-### To manually add to your project
+### 手动添加到您的项目
 
-1. Add `Lib/KeychainAccess.xcodeproj` to your project
-2. Link `KeychainAccess.framework` with your target
-3. Add `Copy Files Build Phase` to include the framework to your application bundle
+1. 添加 `Lib/KeychainAccess.xcodeproj`到您的项目
+2. 链接`KeychainAccess.framework`到你的目标
+3. 添加 `Copy Files Build Phase`以将框架包含到您的应用程序包中
 
-_See [iOS Example Project](https://github.com/kishikawakatsumi/KeychainAccess/tree/master/Examples/Example-iOS) as reference._
+请参阅[iOS 示例项目](https://github.com/kishikawakatsumi/KeychainAccess/tree/master/Examples/Example-iOS)作为参考。
 
 <img src="https://raw.githubusercontent.com/kishikawakatsumi/KeychainAccess/master/Screenshots/Installation.png" width="800px" />
 
